@@ -1,0 +1,89 @@
+﻿<Controls:MetroWindow  x:Class="PlanetsideAlerter.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        ShowMaxRestoreButton="False"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        SaveWindowPosition="True"
+        Icon="/Resources/ps2a.png"
+        ShowMinButton="False"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Closing="SettingsWindow_OnClosing"
+        Title="PS2A SETTINGS">
+    <Control.Resources>
+        <Style x:Key="header" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"></Setter>
+            <Setter Property="Margin" Value="0,0,0,10"></Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="FontSize" Value="16"></Setter>
+            <Setter Property="Margin" Value="0,-5,0,10"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+
+        <Style TargetType="Separator">
+            <Setter Property="Margin" Value="30,40,30,40"></Setter>
+        </Style>
+    </Control.Resources>
+    <Grid>
+        <Controls:MetroAnimatedTabControl Margin="20">
+            <TabItem Header="Settings">
+                <DockPanel Width="600" Height="280" LastChildFill="True" HorizontalAlignment="Left">
+                    <Button Margin="0,30,2,2" Content="Save" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right" FontSize="16" Width="200" Click="SaveSettings"></Button>
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,20,0,0" 
+                            VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{StaticResource header}" Text="UI Color"></TextBlock>
+                            <ComboBox
+                                x:Name="AccentCombo"
+                                ItemsSource="{Binding AccentColors}"
+                                SelectionChanged="ChangeTheme"
+                                DisplayMemberPath="Name"  Height="24" Width="200"/>
+                        </StackPanel>
+                        <Separator/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{StaticResource header}" Text="Servers"></TextBlock>
+                            <CheckBox x:Name="miller" Content="Miller"></CheckBox>
+                            <CheckBox x:Name="connery" Content="Connery"></CheckBox>
+                            <CheckBox x:Name="cobalt" Content="Cobalt"></CheckBox>
+                            <CheckBox x:Name="briggs" Content="Briggs"></CheckBox>
+                            <CheckBox x:Name="emerald" Content="Emerald"></CheckBox>
+                        </StackPanel>
+                        <Separator/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{StaticResource header}" Text="System"></TextBlock>
+                            <CheckBox x:Name="startup" Content="Run on Windows startup"></CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Logs">
+                <ListBox ItemsSource="{Binding Logs}"  Width="600" Height="280"></ListBox>
+            </TabItem>
+            <TabItem Header="About">
+                <StackPanel Width="600" Height="280">
+                    <TextBlock Margin="0,20,0,0" Text="brnkhytr on Miller TR"></TextBlock>
+                    <TextBlock Margin="0,10,0,0" Text="feel free to mail me for anything;"></TextBlock>
+                    <TextBlock>           
+                        <Hyperlink NavigateUri="brnkahyaoglu@gmail.com">
+                            brnkahyaoglu@gmail.com
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="0,10,0,0" Text="and my website;"></TextBlock>
+                    <TextBlock>           
+                        <Hyperlink NavigateUri="http://www.barankahyaoglu.com">
+                            http://www.barankahyaoglu.com
+                        </Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock Margin="0,20" Width="500" TextWrapping="Wrap" HorizontalAlignment="Left" Text="PlanetSide and the SOE logo are registered trademarks of Sony Online Entertainment Inc. © 2004 Sony Online Entertainment Inc. All rights reserved.\n
+All other trademarks or trade names are properties of their respective owners.\n
+This site is in no way associated or endorsed by Sony Online Entertainment Inc. © 2004 Sony Online Entertainment Inc." Height="85"></TextBlock>
+                </StackPanel>
+            </TabItem>
+        </Controls:MetroAnimatedTabControl>
+    </Grid>
+</Controls:MetroWindow>
