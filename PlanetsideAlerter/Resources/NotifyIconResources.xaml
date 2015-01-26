@@ -4,12 +4,12 @@
                     xmlns:local="clr-namespace:PlanetsideAlerter">
     <ContextMenu x:Shared="false" x:Key="SysTrayMenu" Margin="0">
         <MenuItem Header="Show Alerts" Command="{Binding ShowWindowCommand}" />
-        <MenuItem Header="Option" Command="{Binding ShowOptionsCommand}" />
+        <MenuItem Header="Options" Command="{Binding ShowOptionsCommand}" />
         <MenuItem Header="Exit" Command="{Binding ExitApplicationCommand}" />
     </ContextMenu>
     <tb:TaskbarIcon x:Key="NotifyIcon"
                     IconSource="/Resources/psa.ico"
-                    ToolTipText="Double-click for window, right-click for menu"
+                    ToolTipText="Double-click for alerts, right-click for menu"
                     DoubleClickCommand="{Binding ShowWindowCommand}"
                     ContextMenu="{StaticResource SysTrayMenu}">
     </tb:TaskbarIcon>

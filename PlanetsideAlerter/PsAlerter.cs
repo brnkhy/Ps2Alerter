@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -44,7 +45,7 @@ namespace PlanetsideAlerter
             AccentColors = ThemeManager.Accents.Where(x => new []{"Red", "Blue", "Mauve"}.Contains(x.Name))
                                             .Select(a => new AccentColorMenuData() { Name = a.Name, ColorBrush = a.Resources["AccentColorBrush"] as Brush })
                                             .ToList();
-
+            Logs.Add("Alert Sound Location - " + App.AssemblyDirectory + @"\Resources\AlertSound.mp3");
             CreateEventsAndFactions();
             OpenWebSocket();
         }
@@ -99,16 +100,22 @@ namespace PlanetsideAlerter
                         );
                     if (alert.IsFinished)
                         _ongoingEvents.Remove(_ongoingEvents.First(x => x.Value.Id == alert.Id).Key);
+                    else if (!_ongoingEvents.ContainsKey(alert.Id))
+                        _ongoingEvents.Add(alert.Id, alert);
 
                     Logs.Add(DateTime.Now + " new event: " + alert.Event.Name + " at " + alert.Server);
-                    _notifyIcon.ShowCustomBalloon(
-                        new AlertHolder(
-                            new List<Alert>
-                            {
-                                alert
-                            }),
-                        PopupAnimation.Slide,
-                        PopupDuration);
+                    
+                    if (alert.Server.ToServerBit())
+                    {
+                        _notifyIcon.ShowCustomBalloon(
+                            new AlertHolder(
+                                new List<Alert>
+                                {
+                                    alert
+                                }),
+                            PopupAnimation.Slide,
+                            PopupDuration);
+                    }
                 });
             }
             catch (Exception ex)
