@@ -28,9 +28,9 @@
         </Style>
     </Control.Resources>
     <Grid>
-        <Controls:MetroAnimatedTabControl Margin="20">
+        <Controls:MetroAnimatedTabControl Margin="10 10 20 20">
             <TabItem Header="Settings">
-                <DockPanel Width="600" Height="280" LastChildFill="True" HorizontalAlignment="Left">
+                <DockPanel Width="600" Height="280" Margin="10 10 0 0" LastChildFill="True" HorizontalAlignment="Left">
                     <Button Margin="0,30,2,2" Content="Save" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right" FontSize="16" Width="200" Click="SaveSettings"></Button>
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,20,0,0" 
                             VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -41,6 +41,10 @@
                                 ItemsSource="{Binding AccentColors}"
                                 SelectionChanged="ChangeTheme"
                                 DisplayMemberPath="Name"  Height="24" Width="200"/>
+                            <TextBlock Style="{StaticResource header}" Text="Position"></TextBlock>
+                            <ComboBox
+                                x:Name="PositionCombo"
+                                Height="24" Width="200"/>
                         </StackPanel>
                         <Separator/>
                         <StackPanel Orientation="Vertical">
@@ -61,10 +65,10 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Logs">
-                <ListBox ItemsSource="{Binding Logs}"  Width="600" Height="280"></ListBox>
+                <ListBox ItemsSource="{Binding Logs}" Margin="10 10 0 0" Width="600" Height="280"></ListBox>
             </TabItem>
             <TabItem Header="About">
-                <StackPanel Width="600" Height="280">
+                <StackPanel Width="600" Height="280" Margin="10 10 0 0" >
                     <TextBlock Margin="0,20,0,0" Text="brnkhytr on Miller TR"></TextBlock>
                     <TextBlock Margin="0,10,0,0" Text="feel free to mail me for anything;"></TextBlock>
                     <TextBlock>           

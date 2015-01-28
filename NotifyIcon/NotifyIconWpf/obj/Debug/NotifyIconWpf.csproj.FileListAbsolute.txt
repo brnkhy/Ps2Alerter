@@ -1,0 +1,4 @@
+C:\Users\baran.kahyaoglu\Dropbox\Projects\PlanetsideAlerter\NotifyIcon\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\baran.kahyaoglu\Dropbox\Projects\PlanetsideAlerter\NotifyIcon\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\Users\baran.kahyaoglu\Dropbox\Projects\PlanetsideAlerter\NotifyIcon\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+C:\Users\baran.kahyaoglu\Dropbox\Projects\PlanetsideAlerter\NotifyIcon\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb

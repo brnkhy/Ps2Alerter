@@ -29,6 +29,8 @@ namespace PlanetsideAlerter
         public Dictionary<FactionEnum, Faction> Factions { get; set; }
         public ObservableCollection<string> Logs { get; set; }
 
+        private Vector _popupPosition = new Vector(-1,-1);
+        // -1,-1 is the default pos; bottom right of first screen
         private SettingsWindow _optionsWindow;
         private Dictionary<int, Alert> _ongoingEvents;
         private readonly TaskbarIcon _notifyIcon;
@@ -42,12 +44,39 @@ namespace PlanetsideAlerter
             _ongoingEvents = new Dictionary<int, Alert>();
             _notifyIcon = icon;
             _notifyIcon.DataContext = this;
+            ScreenPopupPosition();
+
             AccentColors = ThemeManager.Accents.Where(x => new []{"Red", "Blue", "Mauve"}.Contains(x.Name))
                                             .Select(a => new AccentColorMenuData() { Name = a.Name, ColorBrush = a.Resources["AccentColorBrush"] as Brush })
                                             .ToList();
             Logs.Add("Alert Sound Location - " + App.AssemblyDirectory + @"\Resources\AlertSound.mp3");
             CreateEventsAndFactions();
             OpenWebSocket();
+        }
+
+        public void ScreenPopupPosition()
+        {
+            var ppos = Convert.ToInt32(ConfigurationManager.AppSettings.Get("placement"));
+            var screen = System.Windows.Forms.Screen.AllScreens[ppos/4];
+            switch (ppos%4)
+            {
+                case 0:
+                    _popupPosition = new Vector(screen.WorkingArea.Location.X + screen.WorkingArea.Width, screen.WorkingArea.Location.Y + screen.WorkingArea.Height);
+                    break;
+                case 1:
+                    _popupPosition = new Vector(screen.WorkingArea.Location.X + 1 + 0, screen.WorkingArea.Location.Y + screen.WorkingArea.Height);
+                    break;
+                case 2:
+                    _popupPosition = new Vector(screen.WorkingArea.Location.X + screen.WorkingArea.Width, screen.WorkingArea.Location.Y + 0);
+                    break;
+                case 3:
+                    _popupPosition = new Vector(screen.WorkingArea.Location.X + 1 + 0, screen.WorkingArea.Location.Y + 0);
+                    break;
+                default:
+                    _popupPosition = new Vector(-1, -1);
+                    break;
+            }
+
         }
 
         #region SocketStuff
@@ -113,6 +142,8 @@ namespace PlanetsideAlerter
                                 {
                                     alert
                                 }),
+                            (int)_popupPosition.X,
+                            (int)_popupPosition.Y,
                             PopupAnimation.Slide,
                             PopupDuration);
                     }
@@ -142,6 +173,7 @@ namespace PlanetsideAlerter
             return winner;
         }
 
+        #region XmlStuff
         private void ParseEvents(string e)
         {
             var json = JObject.Parse(e);
@@ -161,7 +193,7 @@ namespace PlanetsideAlerter
         private void UpdateViaXml(object sender, EventArgs e)
         {
             var wc = new WebClient();
-            Logs.Add(DateTime.Now.ToString()+ " downloading metagame xml");
+            Logs.Add(DateTime.Now.ToString() + " downloading metagame xml");
             wc.DownloadStringAsync(
                 new Uri("http://census.soe.com/get/ps2:v2/world_event?type=METAGAME&c:limit=10"));
             wc.DownloadStringCompleted += ProcessXml;
@@ -176,7 +208,7 @@ namespace PlanetsideAlerter
             {
                 var id = entry["instance_id"].Value<int>();
                 var time = entry["timestamp"].Value<int>();
-                if ((int) (120 - (DateTime.Now - Alert.FromUnixTime(time).ToLocalTime()).TotalMinutes) < 0)
+                if ((int)(120 - (DateTime.Now - Alert.FromUnixTime(time).ToLocalTime()).TotalMinutes) < 0)
                     continue;
 
                 if (!_ongoingEvents.ContainsKey(id))
@@ -206,9 +238,10 @@ namespace PlanetsideAlerter
 
             }
 
-            if(pop)
+            if (pop)
                 ShowAllAlerts();
         }
+        #endregion
 
         public void ShowAllAlerts()
         {
@@ -221,6 +254,8 @@ namespace PlanetsideAlerter
             _notifyIcon.ShowCustomBalloon(
                 new AlertHolder(
                     _ongoingEvents.Values.ToList()),
+                    (int)_popupPosition.X,
+                    (int)_popupPosition.Y,
                     PopupAnimation.Slide,
                     PopupDuration);
         }
